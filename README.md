@@ -18,7 +18,7 @@ This system aims to manage student records efficiently. It supports CRUD operati
 
 ### 🔹 Phase 2 – Web Application (Final Product)
 - **Frontend:** HTML, CSS, JavaScript (or optionally React)
-- **Backend:** PHP or Python (Flask/Django)
+- **Backend:** C++ 
 - **Database:** SQLite (for local testing) / MySQL (for scalable deployment)
 - **API:** RESTful API for backend-frontend communication
 - **Version Control:** Git & GitHub
