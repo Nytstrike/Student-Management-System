@@ -3,16 +3,21 @@
 #include<string>
 #include<sstream>
 #include<fstream>
-
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+using std::getline;
+using std::ios;
 void Faculty::updateStudentSubjects() {
-    std::string roll;
-    std::cout << "Enter Student Roll Number: ";
-    std::cin >> roll;
+    string roll;
+    cout << "Enter Student Roll Number: ";
+    cin >> roll;
 
     std::ifstream in("studentdata.txt");
     std::ofstream temp("temp.txt");
 
-    std::string line;
+    string line;
     bool found = false;
 
     if (!in || !temp) {
@@ -22,7 +27,7 @@ void Faculty::updateStudentSubjects() {
 
     while (getline(in, line)) {
         std::istringstream iss(line);
-        std::string fields[11];
+        string fields[11];
         for (int i = 0; i < 11; ++i) {
             if (!getline(iss, fields[i], ',')) break;
         }
@@ -32,7 +37,7 @@ void Faculty::updateStudentSubjects() {
             Subject subj;
             subj.updatemarks();    // get new marks and update grades
             subj.calGPA();         // calculate GPA locally
-            std::string subjectData = subj.serialize();
+            string subjectData = subj.serialize();
 
             double gpa = 0.0;
             for (int i = 0; i < 7; ++i) {
@@ -63,7 +68,7 @@ void Faculty::updateStudentSubjects() {
     rename("temp.txt", "studentdata.txt");
 
     if (found)
-        std::cout << "Subjects, grades, and GPA updated successfully.\n";
+        cout << "Subjects, grades, and GPA updated successfully.\n";
     else
-        std::cout << "Student not found.\n";
+        cout << "Student not found.\n";
 }
