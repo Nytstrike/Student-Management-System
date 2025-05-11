@@ -1,6 +1,6 @@
 For compiling:
 
-g++ main.cpp user.cpp admin.cpp moderator.cpp faculty.cpp student.cpp functions.cpp loginWindow.cpp -o sms.exe
+g++ main.cpp user.cpp admin.cpp moderator.cpp faculty.cpp student.cpp subjects.cpp functions.cpp loginWindow.cpp -o sms.exe
 
 for executing:
 
