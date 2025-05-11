@@ -3,39 +3,43 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+using std::getline;
+using std::ios;
 //CRD for Moderator 
-void Admin::createModerator() {
-    std::string userID, passcode, firstName, lastName, email, phoneNumber, address;
+void AdmincreateModerator() {
+    string userID, passcode, firstName, lastName, email, phoneNumber, address;
 
-    std::cout << "Enter Moderator Information:\n";
-    std::cout << "User ID: "; std::cin >> userID;
-    std::cout << "Passcode: "; std::cin >> passcode;
-    std::cout << "First Name: "; std::cin >> firstName;
-    std::cout << "Last Name: "; std::cin >> lastName;
-    std::cout << "Email: "; std::cin >> email;
-    std::cout << "Phone Number: "; std::cin >> phoneNumber;
-    std::cout << "Address: "; std::cin.ignore(); std::getline(std::cin, address);
-
-    std::ofstream out("moderators.txt", std::ios::app);
+    cout << "Enter Moderator Information:\n";
+    cout << "User ID: "; cin >> userID;
+    cout << "Passcode: "; cin >> passcode;
+   cout << "First Name: "; cin >> firstName;
+   cout << "Last Name: "; cin >> lastName;
+    cout << "Email: "; cin >> email;
+    cout << "Phone Number: "; cin >> phoneNumber;
+    cout << "Address: "; cin.ignore(); getline(cin, address);
+    std::ofstream out("moderators.txt", ios::app);
     if (out.is_open()) {
         out << userID << "," << passcode << "," << firstName << "," << lastName << ","
             << email << "," << phoneNumber << "," << address << "\n";
         out.close();
-        std::cout << "Moderator created successfully.\n";
+        cout << "Moderator created successfully.\n";
     } else {
         std::cerr << "Error: Unable to open moderators.txt\n";
     }
 }
 
-void Admin::displayModerator() {
+void AdmindisplayModerator() {
     std::ifstream in("moderators.txt");
-    std::string line;
+    string line;
     bool found = false;
 
     while (getline(in, line)) {
-        std::istringstream iss(line);
-        std::string userID, passcode, firstName, lastName, email, phoneNumber, address;
-
+       std::istringstream iss(line);
+        string userID, passcode, firstName, lastName, email, phoneNumber, address;
         getline(iss, userID, ',');
         getline(iss, passcode, ',');
         getline(iss, firstName, ',');
@@ -45,7 +49,7 @@ void Admin::displayModerator() {
         getline(iss, address);
 
         found = true;
-        std::cout << "\nModerator ID: " << userID << "\n"
+        cout << "\nModerator ID: " << userID << "\n"
                   << "Name: " << firstName << " " << lastName << "\n"
                   << "Email: " << email << "\n"
                   << "Phone: " << phoneNumber << "\n"
@@ -54,14 +58,14 @@ void Admin::displayModerator() {
     }
 
     if (!found) {
-        std::cout << "No moderators found.\n";
+        cout << "No moderators found.\n";
     }
 }
 
-void Admin::deleteModerator() {
-    std::string targetID;
-    std::cout << "Enter Moderator User ID to delete: ";
-    std::cin >> targetID;
+void AdmindeleteModerator() {
+    string targetID;
+    cout << "Enter Moderator User ID to delete: ";
+    cin >> targetID;
 
     std::ifstream in("moderators.txt");
     std::ofstream temp("temp.txt");
@@ -71,12 +75,12 @@ void Admin::deleteModerator() {
         return;
     }
 
-    std::string line;
+    string line;
     bool found = false;
 
     while (getline(in, line)) {
         std::istringstream iss(line);
-        std::string userID;
+        string userID;
         getline(iss, userID, ',');
 
         if (userID == targetID) {
@@ -94,38 +98,38 @@ void Admin::deleteModerator() {
     rename("temp.txt", "moderators.txt");
 
     if (found) {
-        std::cout << "Moderator with ID '" << targetID << "' deleted successfully.\n";
+        cout << "Moderator with ID '" << targetID << "' deleted successfully.\n";
     } else {
-        std::cout << "Moderator with ID '" << targetID << "' not found.\n";
+        cout << "Moderator with ID '" << targetID << "' not found.\n";
     }
 }
 
 //CRD for faculty 
-void Admin::createFaculty() {
-    std::string userID, passcode, firstName, lastName, email, phoneNumber, address;
+void AdmincreateFaculty() {
+    string userID, passcode, firstName, lastName, email, phoneNumber, address;
 
-    std::cout << "Enter Faculty Info:\n";
-    std::cout << "User ID: "; std::cin >> userID;
-    std::cout << "Passcode: "; std::cin >> passcode;
-    std::cout << "First Name: "; std::cin >> firstName;
-    std::cout << "Last Name: "; std::cin >> lastName;
-    std::cout << "Email: "; std::cin >> email;
-    std::cout << "Phone Number: "; std::cin >> phoneNumber;
-    std::cout << "Address: "; std::cin.ignore(); std::getline(std::cin, address);
+    cout << "Enter Faculty Info:\n";
+    cout << "User ID: "; cin >> userID;
+    cout << "Passcode: "; cin >> passcode;
+    cout << "First Name: "; cin >> firstName;
+    cout << "Last Name: "; cin >> lastName;
+    cout << "Email: "; cin >> email;
+    cout << "Phone Number: "; cin >> phoneNumber;
+    cout << "Address: "; cin.ignore(); getline(cin, address);
 
-    std::ofstream out("faculty.txt", std::ios::app);
+    std::ofstream out("faculty.txt", ios::app | ios::trunc);
     if (out.is_open()) {
         out << userID << "," << passcode << "," << firstName << "," << lastName << ","
             << email << "," << phoneNumber << "," << address << "\n";
         out.close();
-        std::cout << "Faculty member added successfully.\n";
+        cout << "Faculty member added successfully.\n";
     } else {
-        std::cerr << "Error: Unable to open faculty.txt\n";
+       std::cerr << "Error: Unable to open faculty.txt\n";
     }
 }
-void Admin::displayFaculty() {
+void AdmindisplayFaculty() {
     std::ifstream in("faculty.txt");
-    std::string line;
+    string line;
     bool found = false;
 
     if (!in.is_open()) {
@@ -135,7 +139,7 @@ void Admin::displayFaculty() {
 
     while (getline(in, line)) {
         std::istringstream iss(line);
-        std::string userID, passcode, firstName, lastName, email, phoneNumber, address;
+        string userID, passcode, firstName, lastName, email, phoneNumber, address;
 
         getline(iss, userID, ',');
         getline(iss, passcode, ',');
@@ -146,7 +150,7 @@ void Admin::displayFaculty() {
         getline(iss, address);
 
         found = true;
-        std::cout << "\nFaculty ID: " << userID << "\n"
+        cout << "\nFaculty ID: " << userID << "\n"
                   << "Name: " << firstName << " " << lastName << "\n"
                   << "Email: " << email << "\n"
                   << "Phone: " << phoneNumber << "\n"
@@ -155,13 +159,13 @@ void Admin::displayFaculty() {
     }
 
     if (!found) {
-        std::cout << "No faculty members found.\n";
+        cout << "No faculty members found.\n";
     }
 }
-void Admin::deleteFaculty() {
-    std::string targetID;
-    std::cout << "Enter Faculty User ID to delete: ";
-    std::cin >> targetID;
+void AdmindeleteFaculty() {
+    string targetID;
+    cout << "Enter Faculty User ID to delete: ";
+    cin >> targetID;
 
     std::ifstream in("faculty.txt");
     std::ofstream temp("temp.txt");
@@ -171,12 +175,12 @@ void Admin::deleteFaculty() {
         return;
     }
 
-    std::string line;
+    string line;
     bool found = false;
 
     while (getline(in, line)) {
-        std::istringstream iss(line);
-        std::string userID;
+       std::istringstream iss(line);
+        string userID;
         getline(iss, userID, ',');
 
         if (userID == targetID) {
@@ -194,8 +198,8 @@ void Admin::deleteFaculty() {
     rename("temp.txt", "faculty.txt");
 
     if (found) {
-        std::cout << "Faculty with ID '" << targetID << "' deleted successfully.\n";
+        cout << "Faculty with ID '" << targetID << "' deleted successfully.\n";
     } else {
-        std::cout << "Faculty with ID '" << targetID << "' not found.\n";
+        cout << "Faculty with ID '" << targetID << "' not found.\n";
     }
 }
