@@ -1,8 +1,8 @@
 #include <iostream>
-#include "mylibrary.hpp"
 #include <string>
 #include <sstream>
 #include <fstream>
+#include "../include/mylibrary.hpp"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -10,7 +10,7 @@ using std::string;
 using std::getline;
 using std::ios;
 //CRD for Moderator 
-void AdmincreateModerator() {
+void Admin::createModerator() {
     string userID, passcode, firstName, lastName, email, phoneNumber, address;
 
     cout << "Enter Moderator Information:\n";
@@ -32,7 +32,7 @@ void AdmincreateModerator() {
     }
 }
 
-void AdmindisplayModerator() {
+void Admin::displayModerator() {
     std::ifstream in("moderators.txt");
     string line;
     bool found = false;
@@ -62,7 +62,7 @@ void AdmindisplayModerator() {
     }
 }
 
-void AdmindeleteModerator() {
+void Admin::deleteModerator() {
     string targetID;
     cout << "Enter Moderator User ID to delete: ";
     cin >> targetID;
@@ -105,7 +105,7 @@ void AdmindeleteModerator() {
 }
 
 //CRD for faculty 
-void AdmincreateFaculty() {
+void Admin::createFaculty() {
     string userID, passcode, firstName, lastName, email, phoneNumber, address;
 
     cout << "Enter Faculty Info:\n";
@@ -127,7 +127,7 @@ void AdmincreateFaculty() {
        std::cerr << "Error: Unable to open faculty.txt\n";
     }
 }
-void AdmindisplayFaculty() {
+void Admin::displayFaculty() {
     std::ifstream in("faculty.txt");
     string line;
     bool found = false;
@@ -162,7 +162,7 @@ void AdmindisplayFaculty() {
         cout << "No faculty members found.\n";
     }
 }
-void AdmindeleteFaculty() {
+void Admin::deleteFaculty() {
     string targetID;
     cout << "Enter Faculty User ID to delete: ";
     cin >> targetID;
@@ -203,3 +203,17 @@ void AdmindeleteFaculty() {
         cout << "Faculty with ID '" << targetID << "' not found.\n";
     }
 }
+
+void Admin::saveAdmin(Admin *a){
+   std::ofstream outFile("admins.txt", std::ios::app);
+    if (outFile.is_open()) {
+        outFile << a->userID << "," << a->password << "," << a->fName << "," << a->lName << ","
+            << a->email << "," << a->address << "," << a->cnicNum << "\n";
+        outFile.close();
+        cout << "Admin created successfully.\n";
+    } else {
+        std::cerr << "Error: Unable to open admins.txt\n";
+    }
+}
+
+int Admin::adminCount = 0;
