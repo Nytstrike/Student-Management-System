@@ -1,43 +1,50 @@
 #include <iostream>
-#include "mylibrary.hpp"
+#include "mylibrary.hpp" 
 #include <string>
 #include <sstream>
 #include <fstream>
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+using std::getline;
+using std::ios;
 void Moderator::createStudent()
 {
-    std::string userID, passcode, firstName, lastName, email, phoneNumber, address;
-    std::string degree, rollNumber;
+    string userID, passcode, firstName, lastName, email, phoneNumber, address;
+    string degree, rollNumber;
     Subject subjectList;
     double cgpa;
 
-    std::cout << "Enter Roll Number: ";
-    std::cin >> rollNumber;
+    cout << "Enter Roll Number: ";
+    cin >> rollNumber;
 
-    std::cout << "Enter User ID: ";
-    std::cin >> userID;
+    cout << "Enter User ID: ";
+    cin >> userID;
 
-    std::cout << "Enter Passcode: ";
-    std::cin >> passcode;
+    cout << "Enter Passcode: ";
+    cin >> passcode;
 
-    std::cout << "Enter First Name: ";
-    std::cin >> firstName;
+    cout << "Enter First Name: ";
+    cin >> firstName;
 
-    std::cout << "Enter Last Name: ";
-    std::cin >> lastName;
+    cout << "Enter Last Name: ";
+    cin >> lastName;
 
-    std::cout << "Enter Email: ";
-    std::cin >> email;
+    cout << "Enter Email: ";
+    cin >> email;
 
-    std::cout << "Enter Phone Number: ";
-    std::cin >> phoneNumber;
+    cout << "Enter Phone Number: ";
+    cin >> phoneNumber;
 
-    std::cout << "Enter Address: ";
-    std::cin.ignore(); // To clear newline character
-    std::getline(std::cin, address);
-    std::cout<<"Degree (BS(CS), MS(AI), BBA(Fintech)"<<std::endl;
-    std::cout<<" Enter CGPA" <<std::endl;
-    std::cin>>cgpa;
-    std::ofstream out("studentdata.txt", std::ios::app);
+    cout << "Enter Address: ";
+    cin.ignore();
+    getline(cin, address);
+    cout<<"Degree (BS(CS), MS(AI), BBA(Fintech)"<<endl;
+    getline(cin,degree);
+    cout<<" Enter CGPA" <<endl;
+    cin>>cgpa;
+    std::ofstream out("student.txt", ios::app);
     if (out.is_open())
     {
         out << rollNumber << ","
@@ -54,30 +61,31 @@ void Moderator::createStudent()
             << "\n";
 
         out.close();
-        std::cout << "Student record saved successfully.\n";
+        cout << "Student record saved successfully.\n";
+        Student::studentCount++;
     }
     else
     {
-        std::cerr << "Failed to open studentdata.txt!\n";
+        std::cerr << "Failed to open student.txt!\n";
     }
 }
 
 void Moderator::deleteStudent()
 {
-    std::string targetRoll;
-    std::cout << "Enter roll number of the student to delete: ";
-    std::cin >> targetRoll;
+    string targetRoll;
+    cout << "Enter roll number of the student to delete: ";
+    cin >> targetRoll;
 
-    std::ifstream in("studentdata.txt");
+    std::ifstream in("student.txt");
     std::ofstream temp("temp.txt");
 
-    std::string line;
+    string line;
     bool found = false;
 
     while (getline(in, line))
     {
         std::istringstream iss(line);
-        std::string roll;
+        string roll;
         getline(iss, roll, ','); // first field is roll number
 
         if (roll != targetRoll)
@@ -93,22 +101,22 @@ void Moderator::deleteStudent()
     in.close();
     temp.close();
 
-    remove("studentdata.txt");
-    rename("temp.txt", "studentdata.txt");
+    remove("student.txt");
+    rename("temp.txt", "student.txt");
 
     if (found)
-        std::cout << "Student record deleted successfully.\n";
+        cout << "Student record deleted successfully.\n";
     else
-        std::cout << "Student not found.\n";
+        cout << "Student not found.\n";
 }
 
-void Moderator::displayStudent(const std::string &roll)
+void Moderator::displayStudent(const string &roll)
 {
     Student::displayFromFile(roll);
 }
-void Moderator::updateStudent(const std::string& roll)
+void Moderator::updateStudent(const string& roll)
 {
-    std::ifstream in("studentdata.txt");
+    std::ifstream in("student.txt");
     std::ofstream temp("temp.txt");
 
     if (!in.is_open() || !temp.is_open()) {
@@ -116,22 +124,22 @@ void Moderator::updateStudent(const std::string& roll)
         return;
     }
 
-    std::string line;
+    string line;
     bool found = false;
 
-    std::cout << "\t\t\t\t----- Choose any one -----" << std::endl;
-    std::cout << "Enter 1 to Update Passcode Details" << std::endl;
-    std::cout << "Enter 2 to Update Personal Details" << std::endl;
-    std::cout << "Enter 3 to Update Academic Details" << std::endl;
+    cout << "\t\t\t\t----- Choose any one -----" << endl;
+    cout << "Enter 1 to Update Passcode Details" << endl;
+    cout << "Enter 2 to Update Personal Details" << endl;
+    cout << "Enter 3 to Update Academic Details" << endl;
 
     char choose;
-    std::cin >> choose;
-    std::cin.ignore();
+    cin >> choose;
+    cin.ignore();
 
     while (getline(in, line))
     {
         std::istringstream iss(line);
-        std::string fields[8];
+        string fields[8];
         for (int i = 0; i < 8; ++i) {
             if (!getline(iss, fields[i], ',')) break;
         }
@@ -140,37 +148,37 @@ void Moderator::updateStudent(const std::string& roll)
             found = true;
 
             if (choose == '1') {
-                std::cout << "Enter New Passcode: ";
-                std::cin >> fields[1];
+                cout << "Enter New Passcode: ";
+                cin >> fields[1];
             }
             else if (choose == '2')
             {
-                std::cout << "Enter New First Name: ";
-                std::cin >> fields[2];
+                cout << "Enter New First Name: ";
+                cin >> fields[2];
 
-                std::cout << "Enter New Last Name: ";
-                std::cin >> fields[3];
+                cout << "Enter New Last Name: ";
+                cin >> fields[3];
 
-                std::cout << "Enter New Email: ";
-                std::cin >> fields[4];
+                cout << "Enter New Email: ";
+                cin >> fields[4];
 
-                std::cout << "Enter New Phone Number: ";
-                std::cin >> fields[5];
+                cout << "Enter New Phone Number: ";
+                cin >> fields[5];
 
-                std::cout << "Enter New Address: ";
-                std::cin.ignore();
-                std::getline(std::cin, fields[6]);
+                cout << "Enter New Address: ";
+                cin.ignore();
+                getline(cin, fields[6]);
             }
             
             else if (choose == '3') {
                 // Update Academic Details
-                std::cout << "Enter New Degree (BS/MS/PhD): ";
-                std::cin >> fields[7];
+                cout << "Enter New Degree (BS/MS/PhD): ";
+                cin >> fields[7];
 
-                std::cout<<" Grades and Marks can only be changed by Faculty! " <<std::endl;
+                cout<<" Grades and Marks can only be changed by Faculty! " <<endl;
             }
             else {
-                std::cout << "Invalid choice.\n";
+                cout << "Invalid choice.\n";
             }
 
             // Save updated record
@@ -187,11 +195,11 @@ void Moderator::updateStudent(const std::string& roll)
     in.close();
     temp.close();
 
-    remove("studentdata.txt");
-    rename("temp.txt", "studentdata.txt");
+    remove("student.txt");
+    rename("temp.txt", "student.txt");
 
     if (found)
-        std::cout << "Student record updated successfully.\n";
+        cout << "Student record updated successfully.\n";
     else
-        std::cout << "Student with roll number " << roll << " not found.\n";
+        cout << "Student with roll number " << roll << " not found.\n";
 }
