@@ -1,10 +1,10 @@
 #include<iostream>
-#include "include/mylibrary.hpp"
-#include "include/functions.hpp"
-#include "include/subjects.hpp"
 #include<string>
 #include<sstream>
 #include<fstream>
+#include "../include/mylibrary.hpp"
+#include "../include/functions.hpp"
+#include "../include/subjects.hpp"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -74,3 +74,5 @@ void Faculty::updateStudentSubjects() {
     else
         cout << "Student not found.\n";
 }
+
+int Faculty::facultyCount = 0;
