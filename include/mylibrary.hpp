@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
-#include "subjects.hpp"
-#include "functions.hpp""
+#include "include/mylibrary.hpp"
+#include "include/functions.hpp"
+#include "include/subjects.hpp"
 
 // defined in User.cpp
 class User
