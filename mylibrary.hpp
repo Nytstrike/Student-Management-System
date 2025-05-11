@@ -1,33 +1,13 @@
 #pragma once
 #include <iostream>
-//these are defined in functions.cpp
-void loadingBar();
-void ensureDataFileExists();
-void clearInputBuffer();
-void PrintCentered(const std::string &text);
-//defined in User.cpp
-struct Subject
-{
-    char grade[7]; // for all subjects
-    int sub1;
-    int sub2;
-    int sub3;
-    int sub4;
-    int sub5;
-    int elect1;
-    int elect2;
+#include "subjects.hpp"
+#include "functions.hpp""
 
-    void updatemarks();
-    void calGPA();
-    void displaymessage(int i);
-    std::string serialize() const;
-    static Subject deserialize(const std::string &data);
-    void displaymessage();
-};
+// defined in User.cpp
 class User
 {
 protected:
-    std::string userID; // UK0001
+    std::string userID;
     std::string password;
     std::string fName;
     std::string lName;
@@ -38,11 +18,16 @@ protected:
 public:
     User(std::string userID, std::string password, std::string fName, std::string lName, std::string email, std::string address, int cnicNum) {}
 };
-//defined in admin.cpp and txt file is admins.txt
+// defined in admin.cpp and txt file is admins.txt
 class Admin : public User
 {
+    static int adminCount;
+
 public:
-    using User::User;
+    Admin(std::string id, std::string pass, std::string first, std::string last, std::string e, std::string add, int no) : User(id, pass, first, last, e, add, no)
+    {
+        adminCount++;
+    }
     void createModerator() {}
     void displayModerator() {}
     void deleteModerator() {}
@@ -50,32 +35,43 @@ public:
     void createFaculty() {}
     void displayFaculty() {}
     void deleteFaculty() {}
+    friend int totalUserCount();
 };
-//defined in moderators.cpp and same txt file as well 
+// defined in moderators.cpp and same txt file as well
 class Moderator : public User
 {
+    static int modCount;
+
 public:
-    using User::User;
+    Moderator(std::string id, std::string pass, std::string first, std::string last, std::string e, std::string add, int no) : User(id, pass, first, last, e, add, no)
+    {
+        modCount++;
+    }
     void createStudent() {}
     static void displayStudent(const std::string &roll) {}
     void updateStudent(const std::string &roll) {}
     void deleteStudent() {}
+     friend int totalUserCount();
 };
-//defined in faculty.cpp and same txt file as well 
+// defined in faculty.cpp and same txt file as well
 class Faculty : public User
-{
+{   static int facultyCount;
 public:
-    using User::User;
+    Faculty(std::string id, std::string pass, std::string first, std::string last, std::string e, std::string add, int no) : User(id, pass, first, last, e, add, no) {
+        facultyCount++;
+        }
     void updateStudentSubjects();
+    friend int totalUserCount ();
 };
-//defined in student.cpp and same txt file as well 
+// defined in student.cpp and same txt file as well
 class Student : public User
 {
-protected:
+private:
     std::string rollNum; // 24k-1004 ,24k-0548
     std::string degree;  // BS(CS), BE(EE), BBA (Fintech), MS(CS) ...
     Subject subjectList[8];
     double cgpa;
+    static int studentCount;
 
 public:
     using User::User;
@@ -85,7 +81,10 @@ public:
         this->degree = degree;
         for (int i = 0; i < 7; i++)
             subjectList[i] = subjectlist[i];
-        this->cgpa=cgpa;
+        this->cgpa = cgpa;
+        studentCount++;
     }
+    friend int totalUserCount ();
+    friend class Moderator;
     static void displayFromFile(const std::string &rollNumberToFind);
 };
