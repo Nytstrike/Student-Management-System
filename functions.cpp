@@ -1,10 +1,14 @@
 #include <fstream>
+#include "functions.hpp"
 #include "mylibrary.hpp"
 #include <iostream>
 #include <stdio.h>
 #include <windows.h>
-
-void PrintCentered(const std::string &text)
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+void PrintCentered(const string &text)
 {
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -21,11 +25,11 @@ void PrintCentered(const std::string &text)
     cursorPos.Y = csbi.dwCursorPosition.Y;
     SetConsoleCursorPosition(hConsole, cursorPos);
 
-    std::cout << text;
+    cout << text;
 }
 void clearInputBuffer() {
-    std::cin.clear();
-    std::cin.ignore(10000, '\n');
+    cin.clear();
+    cin.ignore(10000, '\n');
 }
 
 void ensureDataFileExists() {
@@ -41,7 +45,7 @@ void ensureDataFileExists() {
         if (!file) {
             std::ofstream createFile(filenames[i]);
             createFile.close();
-            std::cout << "[INFO] Created " << filenames[i] << "\n";
+            cout << "[INFO] Created " << filenames[i] << "\n";
         }
     }
 }
@@ -67,4 +71,6 @@ void loadingBar()
     }
     system("cls");
 }
-
+int totalUserCount() {
+    return Admin::adminCount + Moderator::modCount + Faculty::facultyCount + Student::studentCount;
+}
