@@ -1,6 +1,6 @@
 # 🎓 Student Management System
 
-A simple yet scalable **Student Management System** project, initially built as a **C++ console application**, now being transformed into a full-featured **web application** using modern web technologies.
+A simple yet scalable **Student Management System** project, initially built as a **C++ console application**, and will be transformed into a full-featured **web application** using modern web technologies.
 
 ---
 
