@@ -1,7 +1,7 @@
 #include<iostream>
-#include "include/mylibrary.hpp"
-#include "include/functions.hpp"
-#include "include/subjects.hpp"
+#include "../include/mylibrary.hpp"
+#include "../include/functions.hpp"
+#include "../include/subjects.hpp"
 #include<sstream>
 
 void Subject::updatemarks()
@@ -56,7 +56,7 @@ void Subject::calGPA()
     std::cout << "Calculated GPA: " << gpa << std::endl;
 }
 
-std::string Subject::serialize() const
+string Subject::serialize() const
 {
     std::string result = std::to_string(sub1) + ";" + std::to_string(sub2) + ";" +
                          std::to_string(sub3) + ";" + std::to_string(sub4) + ";" +
