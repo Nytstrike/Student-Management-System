@@ -1,7 +1,8 @@
 #include <iostream>
-#include "include/mylibrary.hpp"
-#include "include/functions.hpp"
-#include "include/subjects.hpp"
+#include "../include/mylibrary.hpp"
+#include "../include/functions.hpp"
+#include "../include/subjects.hpp"
+#include "../include/loginWindow.hpp"
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -16,4 +17,5 @@ using std::getline;
 using std::ios;
 int main () {
     preloginWindow();
+    loginOptions();
 }
