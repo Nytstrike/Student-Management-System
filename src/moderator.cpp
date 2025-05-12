@@ -18,57 +18,96 @@ void Moderator::createStudent()
     Subject subjectList;
     double cgpa;
 
-    cout << "Enter Roll Number: ";
-    cin >> rollNumber;
+    // This loop ensures unique userID, email, and rollNumber
+    while (true) {
+        bool isDuplicate = false;
 
-    cout << "Enter User ID: ";
-    cin >> userID;
+        cout << "Enter Roll Number: ";
+        cin >> rollNumber;
 
-    cout << "Enter Passcode: ";
-    cin >> passcode;
+        cout << "Enter User ID: ";
+        cin >> userID;
 
-    cout << "Enter First Name: ";
-    cin >> firstName;
+        cout << "Enter Passcode: ";
+        cin >> passcode;
 
-    cout << "Enter Last Name: ";
-    cin >> lastName;
+        cout << "Enter First Name: ";
+        cin >> firstName;
 
-    cout << "Enter Email: ";
-    cin >> email;
+        cout << "Enter Last Name: ";
+        cin >> lastName;
 
-    cout << "Enter Phone Number: ";
-    cin >> phoneNumber;
+        cout << "Enter Email: ";
+        cin >> email;
 
-    cout << "Enter Address: ";
-    cin.ignore();
-    getline(cin, address);
-    cout<<"Degree (BS(CS), MS(AI), BBA(Fintech)"<<endl;
-    getline(cin,degree);
-    cout<<" Enter CGPA" <<endl;
-    cin>>cgpa;
-    std::ofstream out("student.txt", ios::app);
-    if (out.is_open())
-    {
-        out << rollNumber << ","
-            << userID << ","
-            << passcode << ","
-            << firstName << ","
-            << lastName << ","
-            << email << ","
-            << phoneNumber << ","
-            << address << ","
-            << degree << ","
-            << cgpa << ","
-            << subjectList.serialize() << ","
-            << "\n";
+        cout << "Enter Phone Number: ";
+        cin >> phoneNumber;
 
-        out.close();
-        cout << "Student record saved successfully.\n";
-        Student::studentCount++;
-    }
-    else
-    {
-        std::cerr << "Failed to open student.txt!\n";
+        cout << "Enter Address: ";
+        cin.ignore();
+        getline(cin, address);
+
+        cout << "Degree (BS(CS), MS(AI), BBA(Fintech))" << endl;
+        getline(cin, degree);
+
+        cout << "Enter CGPA: " << endl;
+        cin >> cgpa;
+
+        // Check for duplicates in the student.txt file
+        std::ifstream inFile("student.txt");
+        string line;
+        while (getline(inFile, line)) {
+            std::stringstream ss(line);
+            string storedRollNumber, storedUserID, storedPasscode, storedFirstName, storedLastName;
+            string storedEmail, storedPhoneNumber, storedAddress, storedDegree, storedCGPA, storedSubjects;
+
+            getline(ss, storedRollNumber, ',');
+            getline(ss, storedUserID, ',');
+            getline(ss, storedPasscode, ',');
+            getline(ss, storedFirstName, ',');
+            getline(ss, storedLastName, ',');
+            getline(ss, storedEmail, ',');
+            getline(ss, storedPhoneNumber, ',');
+            getline(ss, storedAddress, ',');
+            getline(ss, storedDegree, ',');
+            getline(ss, storedCGPA, ',');
+            getline(ss, storedSubjects);
+
+            // Check for duplicate rollNumber, userID or email
+            if (rollNumber == storedRollNumber || userID == storedUserID || email == storedEmail) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        inFile.close();
+
+        if (isDuplicate) {
+            cout << "\nError: Roll Number, User ID, or Email already exists. Please try again.\n";
+        } else {
+            // No duplicates found, write the new student's data to file
+            std::ofstream outFile("student.txt", ios::app);
+            if (outFile.is_open()) {
+                outFile << rollNumber << ","
+                        << userID << ","
+                        << passcode << ","
+                        << firstName << ","
+                        << lastName << ","
+                        << email << ","
+                        << phoneNumber << ","
+                        << address << ","
+                        << degree << ","
+                        << cgpa << ","
+                        << subjectList.serialize() << ","
+                        << "\n";
+
+                outFile.close();
+                cout << "Student record saved successfully.\n";
+                Student::studentCount++;
+            } else {
+                std::cerr << "Failed to open student.txt!\n";
+            }
+            break;  // Exit the loop after successful creation
+        }
     }
 }
 
