@@ -38,7 +38,7 @@ void clearInputBuffer()
 void ensureDataFileExists()
 {
     const char *filenames[] = {
-        "studentdata.txt",
+        "student.txt",
         "moderators.txt",
         "faculty.txt",
         "admins.txt"};
