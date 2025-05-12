@@ -16,7 +16,7 @@ void Faculty::updateStudentSubjects() {
     cout << "Enter Student Roll Number: ";
     cin >> roll;
 
-    std::ifstream in("studentdata.txt");
+    std::ifstream in("student.txt");
     std::ofstream temp("temp.txt");
 
     string line;
@@ -66,8 +66,8 @@ void Faculty::updateStudentSubjects() {
     in.close();
     temp.close();
 
-    remove("studentdata.txt");
-    rename("temp.txt", "studentdata.txt");
+    remove("student.txt");
+    rename("temp.txt", "student.txt");
 
     if (found)
         cout << "Subjects, grades, and GPA updated successfully.\n";
