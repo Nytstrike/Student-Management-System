@@ -1,7 +1,7 @@
 #include <iostream>
-#include "include/mylibrary.hpp"
-#include "include/functions.hpp"
-#include "include/subjects.hpp"
+#include "../include/mylibrary.hpp"
+#include "../include/functions.hpp"
+#include "../include/subjects.hpp"
 #include <string>
 #include <sstream>
 #include <cstring>
