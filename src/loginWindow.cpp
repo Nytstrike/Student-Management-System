@@ -1,19 +1,20 @@
 #include<iostream>
-#include"include/functions.hpp"
-#include"include/loginWindow.hpp"
+#include"../include/mylibrary.hpp"
+#include "../include/functions.hpp"
+#include "../include/loginWindow.hpp"
 #include<conio.h>
 #include<windows.h>
 using std::cout;
 using std::string;
 using std::endl;
 using std::cin;
-void printCentered(const std::string &text)
+void printCentered(const string &text)
 {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     int terminalWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     int padding = (terminalWidth - text.length()) / 2;
-    std::cout << std::string(padding, ' ') << text << std::endl;
+    cout << string(padding, ' ') << text << endl;
 }
 void getTerminalSize(int &width, int &height)
 {
@@ -28,13 +29,13 @@ void moveCursorTo(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void printAtBottom(const std::string &text)
+void printAtBottom(const string &text)
 {
     int termWidth, termHeight;
     getTerminalSize(termWidth, termHeight);
     // Move cursor to the last row
     moveCursorTo(0, termHeight - 1); // (X=0, Y=bottom_row)
-    std::cout << text;
+    cout << text;
 }
 
 void preloginWindow()
@@ -61,16 +62,16 @@ string getPasscode() {
         }
         else if (ch == 8 && i > 0) { // ASCII 8 = Backspace
             i--;
-            std::cout << "\b \b"; // Erase the asterisk
+            cout << "\b \b"; // Erase the asterisk
         }
         else if (isprint(ch)) { 
             pass[i++] = ch;
-            std::cout << '*';
+            cout << '*';
         }
     }
     
     pass[i] = '\0';
-    std::cout << std::endl;
+    cout << endl;
     
     return string(pass);
 }
@@ -79,34 +80,102 @@ void loginOptions()
 {
     string tempID;
     string tempPasscode;   
-    printCentered("--|Sign in|--");
-    while (1)
+
+    while (true)
     {
+        clearScreen();
+        printCentered("--| Sign In |--");
         printCentered("------------------");
         printCentered("|                |");
-        printCentered("|Select User type|");
+        printCentered("| Select User Type |");
         printCentered("|                |");
-        printCentered(" ------------------");
-        cout<<"\n";
-        printCentered("|Press 1 to Sign in as Admin|");
-        printCentered("|Press 2 to Sign in as Moderator|");
-        printCentered("|Press 3 to Sign in as Faculty|");
-        printCentered("|Press 4 to Sign in as Student|");
-        printCentered("|Press 'Esc key' to Exit|");
-        int ch=_getch();
+        printCentered("------------------");
+        cout << "\n";
+        printCentered("| Press 1 to Sign in as Admin     |");
+        printCentered("| Press 2 to Sign in as Moderator |");
+        printCentered("| Press 3 to Sign in as Faculty   |");
+        printCentered("| Press 4 to Sign in as Student   |");
+        printCentered("| Press 'Esc' key to Exit         |");
+
+        int ch = _getch();
+
+        if (ch == 27)  // ESC key ASCII
+        {
+            printCentered("Exiting Login...");
+            break;
+        }
+
+        clearScreen();
+
         switch (ch)
         {
-        case 1:
-            printCentered("Signing in as Admin ....");
-            cout<<"Enter User Id";
-            cin>>tempID;
-            cout<<"\n";
-            cout<<"Enter Password";
-            tempPasscode=getPasscode();
-            if(1) {}
+        case '1':
+            printCentered("Signing in as Admin...");
+            cout << "\nEnter User ID: ";
+            cin >> tempID;
+            cout << "Enter Password: ";
+            tempPasscode = getPasscode();
+            if (verifyPassword("admin",tempID, tempPasscode)) {
+                printCentered("Login Successful!");
+                _getch();
+                adminWindow();
+            } else {
+                printCentered("Invalid Admin credentials!");
+                _getch();
+            }
             break;
-        
+
+        case '2':
+            printCentered("Signing in as Moderator...");
+            cout << "\nEnter User ID: ";
+            cin >> tempID;
+            cout << "Enter Password: ";
+            tempPasscode = getPasscode();
+            if (verifyPassword("moderator",tempID, tempPasscode)) {
+                printCentered("Login Successful!");
+                _getch();
+                moderatorWindow();
+            } else {
+                printCentered("Invalid Moderator credentials!");
+                _getch();
+            }
+            break;
+
+        case '3':
+            printCentered("Signing in as Faculty...");
+            cout << "\nEnter User ID: ";
+            cin >> tempID;
+            cout << "Enter Password: ";
+            tempPasscode = getPasscode();
+            if (verifyPassword("faculty",tempID, tempPasscode)) {
+                printCentered("Login Successful!");
+                _getch();
+                facultyWindow();
+            } else {
+                printCentered("Invalid Faculty credentials!");
+                _getch();
+            }
+            break;
+
+        case '4':
+            printCentered("Signing in as Student...");
+            cout << "\nEnter User ID: ";
+            cin >> tempID;
+            cout << "Enter Password: ";
+            tempPasscode = getPasscode();
+            if (verifyPassword("student",tempID, tempPasscode)) {
+                printCentered("Login Successful!");
+                _getch();
+                studentWindow();
+            } else {
+                printCentered("Invalid Student credentials!");
+                _getch();
+            }
+            break;
+
         default:
+            printCentered("Invalid choice. Try again!");
+            _getch();
             break;
         }
     }
