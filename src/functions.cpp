@@ -6,15 +6,29 @@
 #include <sstream>
 #include <string>
 #include <conio.h>
-#include <stdio.h> // to use printf function for loading bar
+#include <stdio.h>   // to use printf function for loading bar
 #include <windows.h> //for formatting
-using std::getline;
 using std::cin;
 using std::cout;
 using std::endl;
+using std::getline;
 using std::string;
 
-
+void saveAdmin(Admin *a)
+{
+    std::ofstream outFile("admins.txt", std::ios::app);
+    if (outFile.is_open())
+    {
+        outFile << a->userID << "," << a->password << "," << a->fName << "," << a->lName << ","
+                << a->email << "," << a->address << "," << a->cnicNum << "\n";
+        outFile.close();
+        cout << "Admin created successfully.\n";
+    }
+    else
+    {
+        std::cerr << "Error: Unable to open admins.txt\n";
+    }
+}
 void clearInputBuffer()
 {
     cin.clear();
@@ -51,12 +65,12 @@ void loadingBar()
     system("COLOR 0e");
     int a = 177, b = 219;
     cout << "\n\n\n";
-    cout << "\n\t\t\t\t\t\t Loading ...";
-    cout << "\n\n\t\t\t\t\t";
+    cout << "\n\t\t\t\t\t\t\t\t Loading ...";
+    cout << "\n\t\t\t\t\t\t\t\t";
     for (int i = 0; i < 25; i++)
         cout << (char)a;
     cout << "\r";
-    cout << "\t\t\t\t\t";
+    cout << "\t\t\t\t\t\t\t\t";
     for (int i = 0; i < 25; i++)
     {
         cout << (char)b;
@@ -69,27 +83,35 @@ int totalUserCount()
     return Admin::adminCount + Moderator::modCount + Faculty::facultyCount + Student::studentCount;
 }
 
-bool verifyPassword(string role,string userID,string password){
+bool verifyPassword(string role, string userID, string password)
+{
     std::string filename;
 
     // Map role to corresponding file
-    if (role == "admin") filename = "admins.txt";
-    else if (role == "moderator") filename = "moderators.txt";
-    else if (role == "faculty") filename = "faculty.txt";
-    else if (role == "student") filename = "student.txt";
-    else {
+    if (role == "admin")
+        filename = "admins.txt";
+    else if (role == "moderator")
+        filename = "moderators.txt";
+    else if (role == "faculty")
+        filename = "faculty.txt";
+    else if (role == "student")
+        filename = "student.txt";
+    else
+    {
         std::cerr << "Invalid role specified.\n";
         return false;
     }
 
     std::ifstream file(filename);
-    if (!file) {
+    if (!file)
+    {
         std::cerr << "Could not open file: " << filename << std::endl;
         return false;
     }
 
     std::string line;
-    while (std::getline(file, line)) {
+    while (std::getline(file, line))
+    {
         std::stringstream ss(line);
         std::string id, pass;
 
@@ -97,22 +119,27 @@ bool verifyPassword(string role,string userID,string password){
         std::getline(ss, id, ',');
         std::getline(ss, pass, ',');
 
-        if (id == userID && pass == password) {
-            return true;  
+        if (id == userID && pass == password)
+        {
+            return true;
         }
     }
 
-    return false;  
+    return false;
 }
 
-void clearScreen() {
-    system("cls");  
+void clearScreen()
+{
+    system("cls");
 }
-void adminWindow() {
+void adminWindow()
+{
+    string tempId;
     Admin admin;
-    while (true) {
+    while (true)
+    {
         system("cls");
-        printCentered("== Admin Window ==");
+        printCentered(" |Admin Window| ");
         cout << "\n1. Create Moderator";
         cout << "\n2. Display Moderators";
         cout << "\n3. Delete Moderator";
@@ -122,24 +149,57 @@ void adminWindow() {
         cout << "\n0. Logout\n";
         cout << "Enter choice: ";
         char choice = _getch();
-        switch (choice) {
-            case '1': admin.createModerator(); break;
-            case '2': admin.displayModerator(); break;
-            case '3': admin.deleteModerator(); break;
-            case '4': admin.createFaculty(); break;
-            case '5': admin.displayFaculty(); break;
-            case '6': admin.deleteFaculty(); break;
-            case '0': return;
-            default: cout << "\nInvalid choice!"; _getch(); break;
+        switch (choice)
+        {
+        case '1':
+            admin.createModerator();
+            break;
+        case '2':
+            clearInputBuffer();
+            cout << "\nEnter UserID:";
+            cin >> tempId;
+            admin.displayModerator(tempId);
+            cout << "\n";
+            printCentered("| Press any key to continue |");
+            _getch();
+            break;
+        case '3':
+            clearInputBuffer();
+            admin.deleteModerator();
+            break;
+        case '4':
+            clearInputBuffer();
+            admin.createFaculty();
+            break;
+        case '5':
+            clearInputBuffer();
+            cout << "\nEnter UserID:";
+            cin >> tempId;
+            admin.displayFaculty(tempId);
+             cout << "\n";
+            printCentered("| Press any key to continue |");
+            _getch();
+            break;
+        case '6':
+            admin.deleteFaculty();
+            break;
+        case '0':
+            return;
+        default:
+            cout << "\nInvalid choice!";
+            _getch();
+            break;
         }
     }
 }
 
-void moderatorWindow() {
+void moderatorWindow()
+{
     Moderator mod;
-    while (true) {
+    while (true)
+    {
         system("cls");
-        printCentered("== Moderator Window ==");
+        printCentered(" |Moderator Window| ");
         cout << "\n1. Create Student";
         cout << "\n2. Display Student";
         cout << "\n3. Update Student";
@@ -148,47 +208,100 @@ void moderatorWindow() {
         cout << "Enter choice: ";
         char choice = _getch();
         string roll;
-        switch (choice) {
-            case '1': mod.createStudent(); break;
-            case '2': cout << "\nEnter Roll Number: "; cin >> roll; Moderator::displayStudent(roll); break;
-            case '3': cout << "\nEnter Roll Number: "; cin >> roll; mod.updateStudent(roll); break;
-            case '4': mod.deleteStudent(); break;
-            case '0': return;
-            default: cout << "\nInvalid choice!"; _getch(); break;
+        switch (choice)
+        {
+        case '1':
+            cout << "\n";
+            mod.createStudent();
+            break;
+        case '2':
+            cout << "\n";
+            cout << "\nEnter Roll Number: ";
+            cin >> roll;
+            Moderator::displayStudent(roll);
+             cout << "\n";
+            printCentered("| Press any key to continue |");
+            _getch();
+            break;
+        case '3':
+            cout << "\n";
+            cout << "\nEnter Roll Number: ";
+            cin >> roll;
+            mod.updateStudent(roll);
+            break;
+        case '4':
+            cout << "\n";
+            mod.deleteStudent();
+            break;
+        case '0':
+            return;
+        default:
+            cout << "\n";
+            cout << "\nInvalid choice!";
+            _getch();
+            break;
         }
     }
 }
 
-void facultyWindow() {
+void facultyWindow()
+{
     Faculty faculty;
-    while (true) {
+    while (true)
+    {
         system("cls");
-        printCentered("== Faculty Window ==");
+        printCentered(" |Faculty Window| ");
         cout << "\n1. Update Student Subjects";
         cout << "\n0. Logout\n";
         cout << "Enter choice: ";
         char choice = _getch();
-        switch (choice) {
-            case '1': faculty.updateStudentSubjects(); break;
-            case '0': return;
-            default: cout << "\nInvalid choice!"; _getch(); break;
+        switch (choice)
+        {
+        case '1':
+            cout << "\n";
+            faculty.updateStudentSubjects();
+            break;
+        case '0':
+            return;
+        default:
+            cout << "\nInvalid choice!";
+             cout << "\n";
+            printCentered("| Press any key to continue |");
+            _getch();
+            break;
         }
     }
 }
 
-void studentWindow() {
+void studentWindow()
+{
     string roll;
-    while (true) {
+    while (true)
+    {
         system("cls");
-        printCentered("== Student Window ==");
+        printCentered(" |Student Window| ");
         cout << "\n1. View Result";
         cout << "\n0. Logout\n";
         cout << "Enter choice: ";
         char choice = _getch();
-        switch (choice) {
-            case '1': cout << "\nEnter Roll Number: "; cin >> roll; Student::displayFromFile(roll); break;
-            case '0': return;
-            default: cout << "\nInvalid choice!"; _getch(); break;
+        switch (choice)
+        {
+        case '1':
+            cout << "\nEnter Roll Number: ";
+            cin >> roll;
+            Student::displayFromFile(roll);
+             cout << "\n";
+            printCentered("| Press any key to continue |");
+            _getch();
+            break;
+        case '0':
+            return;
+        default:
+            cout << "\nInvalid choice!";
+             cout << "\n";
+            printCentered("| Press any key to continue |");
+            _getch();
+            break;
         }
     }
 }
