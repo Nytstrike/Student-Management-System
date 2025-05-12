@@ -1,0 +1,3 @@
+25M0001,M1234A,Haider,Farooq,haider.farooq@university.com,923343776999,Tipu Sultan Road
+25M0002,M1234B,Neeraj,Khemani,neeraj.khemani@university.com,923353076099,Gulshan Hadeed
+25M0003,M1234C,Kashan,Shiekh,shiekh.kashan@university.com,923043476690,Regent Plaza
