@@ -1,7 +1,7 @@
 #include <iostream>
-#include "include/mylibrary.hpp"
-#include "include/functions.hpp"
-#include "include/subjects.hpp"
+#include "../include/mylibrary.hpp"
+#include "../include/functions.hpp"
+#include "../include/subjects.hpp"
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -205,3 +205,5 @@ void Moderator::updateStudent(const string& roll)
     else
         cout << "Student with roll number " << roll << " not found.\n";
 }
+
+int Moderator::modCount = 0;
