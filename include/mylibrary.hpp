@@ -30,13 +30,13 @@ public:
         adminCount++;
     }
     void createModerator();
-    void displayModerator();
+    void displayModerator(const string userIDPointer);
     void deleteModerator();
     // CRD for faculty
     void createFaculty();
-    void displayFaculty();
+    void displayFaculty(const string userIDPointer);
     void deleteFaculty();
-    void saveAdmin(Admin *a);
+    friend void saveAdmin(Admin *a);
     friend int totalUserCount();
 };
 // defined in moderators.cpp and same txt file as well
@@ -78,7 +78,6 @@ private:
     static int studentCount;
 
 public:
-    using User::User;
     Student(){}
     Student(string userID, string password, string fName, string lName, string email, string address, int cnicNum, string rollNum, string degree, Subject subjectlist[8], double cgpa) : User(userID, password, fName, lName, email, address, cnicNum)
     {
