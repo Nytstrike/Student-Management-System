@@ -28,12 +28,12 @@ void saveAdmin(Admin *a)
     {
         std::cerr << "Error: Unable to open admins.txt\n";
     }
-}
+} // This function is only used when implicitly defining an admin obj.
 void clearInputBuffer()
 {
     cin.clear();
     cin.ignore(10000, '\n');
-}
+} //an extension to cin.ignore
 
 void ensureDataFileExists()
 {
@@ -81,7 +81,7 @@ void loadingBar()
 int totalUserCount()
 {
     return Admin::adminCount + Moderator::modCount + Faculty::facultyCount + Student::studentCount;
-}
+} //function is not used at the moment 
 
 bool verifyPassword(string role, string userID, string password)
 {
